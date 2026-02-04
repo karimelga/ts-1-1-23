@@ -5,16 +5,16 @@ import java.util.HashSet;
 import java.util.Scanner;
 
 /**
- * Takes in file and dechipers text based on
- * subsitution key.
+ * Represents a substitution key taken from a file.
+ * Allows for deciphering of text substitution key.
  */
-public class SubsitutionKey {
+public class SubstitutionKey {
   // Key is the base char and value is the char that subsitutes that char in
   // decrypted message.
-  private HashMap<Character, Character> subsitutionKey;
+  private HashMap<Character, Character> substitutionKey;
 
   /**
-   * Verifies that given subsitution key file exists and is in the below format.
+   * Verifies that given substitution key file exists and is in the below format.
    * -base character line-
    * -subsituted character line-
    *
@@ -22,11 +22,14 @@ public class SubsitutionKey {
    * @exception IllegalArgumentException If file path led to an invalid file or led to
    *                                     invalid subsitution key.
    */
-  public SubsitutionKey(final String keyPath) throws IllegalArgumentException {
+  public SubstitutionKey(final String keyPath) throws IllegalArgumentException {
+    if (keyPath == null) {
+      throw new IllegalArgumentException("Key file path cannot be null.");
+    }
     // Verify file exists at all and begins scanning
     File keyFile;
     String baseLine;
-    String subsituteLine;
+    String substituteLine;
     try {
       keyFile = new File(keyPath);
       Scanner keyScanner = new Scanner(keyFile);
@@ -37,14 +40,14 @@ public class SubsitutionKey {
       if (!keyScanner.hasNextLine()) {
         throw new IllegalArgumentException("Key file has only one line.");
       }
-      subsituteLine = keyScanner.nextLine();
+      substituteLine = keyScanner.nextLine();
       keyScanner.close();
     } catch (FileNotFoundException exception) {
       throw new IllegalArgumentException("Key path does not lead to a valid txt file.");
     }
 
     // Verify that lines extracted from file will work as a subsitution key
-    if (subsituteLine.length() != baseLine.length()) {
+    if (substituteLine.length() != baseLine.length()) {
       throw new IllegalArgumentException(
               "Base character line and subsituted letter line don't have the same length.");
     }
@@ -60,35 +63,40 @@ public class SubsitutionKey {
     }
 
     // Actually sets up hash map
-    subsitutionKey = new HashMap<>();
+    substitutionKey = new HashMap<>();
     for (int lineIter = 0 ; lineIter < baseLine.length() ; lineIter++) {
-      subsitutionKey.put(baseLine.charAt(lineIter), subsituteLine.charAt(lineIter));
+      substitutionKey.put(baseLine.charAt(lineIter), substituteLine.charAt(lineIter));
     }
   }
 
   /**
-   * Runs a string through a subsitution key and return the result.
-   * If a character is not part of the subsitution key,
-   * it will simply be copied to the decrypted string.
+   * Runs a string through a substitution key,
+   * transposing each character to a new char using key and return the result.
+   * If a character is not part of the substitution key it will not be transposed
+   * and will stay the same in the decrypted string.
    *
-   * @param encryptedString String encrypted with given subsitution key.
+   * @param encryptedString String encrypted with given substitution key.
    * @return Decrypted string.
    */
-  public String dechiper(final String encryptedString) {
+  public String decipher(final String encryptedString) {
+    if (encryptedString == null) {
+      return "";
+    }
+
     StringBuilder decryptedOutputStringBuilder = new StringBuilder(encryptedString.length());
-    // Goes char by char finding a valid subsitution char to put in decrypted output.
+    // Goes char by char finding a valid substitution char to put in decrypted output.
     for (int lineIter = 0 ; lineIter < encryptedString.length() ; lineIter++) {
       char encryptedChar = encryptedString.charAt(lineIter);
       char decryptedChar;
-      // Char exists in subsitution key, and decrypted in accordance to subsitution key.
-      if (subsitutionKey.containsKey(encryptedChar)) {
-        decryptedChar = subsitutionKey.get(encryptedString.charAt(lineIter));
+      // Char exists in substitution key, and decrypted in accordance to subsitution key.
+      if (substitutionKey.containsKey(encryptedChar)) {
+        decryptedChar = substitutionKey.get(encryptedString.charAt(lineIter));
       }
-      // Char doesn't exist in subsisitution key and directly inputted into decrypted output.
+      // Char doesn't exist in substitution key and directly inputted into decrypted output.
       else {
         decryptedChar = encryptedChar;
       }
-      decryptedOutputStringBuilder.setCharAt(lineIter, decryptedChar);
+      decryptedOutputStringBuilder.append(decryptedChar);
     }
     return decryptedOutputStringBuilder.toString();
   }
