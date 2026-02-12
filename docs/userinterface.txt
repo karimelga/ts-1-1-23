@@ -1,0 +1,40 @@
+User Interface/Command Line Interface - TopSecret 02/08/2026
+Bradley Ayieko
+
+Program name:
+    java topsecret
+
+Purpose:
+    Gives a command line interface that, based on certain parameters, either lists all available files, or reads and
+    displays the contents of the files based on a key.
+
+Usage:
+    java topsecret
+        Lists all of the numbered available files
+
+    java topsecret <nn>
+        Reads and displays the contents of the selected file using the default deciphering key.
+
+    java topsecret <nn> <key>
+        Reads and displays the contents of the selected file using the chosen deciphering key.
+
+Arguments:
+    <nn> File number (2 digits. Ex. 01, 02, 03)
+    <key> Optional alternative cipher key
+
+Validation:
+    - If no arguments are given, a list of the files should be displayed
+    - If one argument is given, it should be the 2 digit file number. If it is not, an error message should be displayed
+    - If two arguments are given, the first one should be the 2 digit file number, and the second one should be the
+      alternate deciphering key. If they are not in that order and correct format, then an error message should be
+      displayed
+    - If there are more than two arguments, then an error message should be thrown.
+
+Notes:
+    - The program ends after showing the file list, the contents of an indicated file, or after displaying an error
+      message.
+    - If "java topsecret" were called, it should output in the following format:
+        01 filea.txt
+        02 fileb.txt
+        03 filec.txt
+
