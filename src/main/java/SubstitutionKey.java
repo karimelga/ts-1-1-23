@@ -10,6 +10,7 @@ import java.util.Scanner;
  */
 public class SubstitutionKey {
   // Key is the base char and value is the char that subsitutes that char in
+  // Key is the base char and value is the char that substitutes that char in
   // decrypted message.
   private HashMap<Character, Character> substitutionKey;
 
@@ -46,18 +47,17 @@ public class SubstitutionKey {
       throw new IllegalArgumentException("Key path does not lead to a valid txt file.");
     }
 
-    // Verify that lines extracted from file will work as a subsitution key
+    // Verify that lines extracted from file will work as a substitution key
     if (substituteLine.length() != baseLine.length()) {
       throw new IllegalArgumentException(
-              "Base character line and subsituted letter line don't have the same length.");
+              "Base character line and substituted letter line don't have the same length.");
     }
     HashSet<Character> baseSet = new HashSet<>();
     for (int lineIter = 0 ; lineIter < baseLine.length() ; lineIter++) {
       char baseChar = baseLine.charAt(lineIter);
       if (baseSet.contains(baseChar)) {
-        System.out.println(baseChar);
         throw new IllegalArgumentException(
-                "Duplicate chareter in base line causing ambiguous subsitution key.");
+                "Duplicate character in base line causing ambiguous substitution key.");
       }
       baseSet.add(baseChar);
     }
@@ -78,6 +78,7 @@ public class SubstitutionKey {
    * @param encryptedString String encrypted with given substitution key.
    * @return Decrypted string.
    */
+
   public String decipher(final String encryptedString) {
     if (encryptedString == null) {
       return "";

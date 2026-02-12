@@ -45,13 +45,15 @@ public class TestSubstitutionKey {
 
   @Test
   public void duplicateBaseCharacterTest() {
+//    new SubstitutionKey(
+//            "src/test/testKeys/validationTestKeys/duplicateBaseKey.txt");
     Assertions.assertThrows(
             IllegalArgumentException.class,
             () -> new SubstitutionKey(
-                    "src/test/testKeys/validationTestKeys/duplicateBaseLine.txt"));
+                    "src/test/testKeys/validationTestKeys/duplicateBaseKey.txt"));
     Assertions.assertDoesNotThrow(
             () -> new SubstitutionKey(
-                    "src/test/testKeys/validationTestKeys/duplicateSubsitutionLine.txt"));
+                    "src/test/testKeys/validationTestKeys/duplicateSubsitutionKey.txt"));
   }
 
   @Test
