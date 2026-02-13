@@ -1,4 +1,4 @@
-Program Control - Member C
+Program Control - Tucge
 
 Purpose: The ProgramController class connects command-line arguments to the FileOpener and SubstitutionKey components. It does not directly access the file system. It coordinates program flow and ensures proper error handling.
 
