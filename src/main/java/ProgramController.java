@@ -49,7 +49,7 @@ public class ProgramController {
         //optional: deciphering
         if (args.length >= 2) {
             try {
-                SubstitutionKey key = new SubstitutionKey(args[1]);
+                SubstitutionKey key = new SubstitutionKey(fileOpener, args[1]);
                 content = key.decipher(content);
             } catch (Exception e) {
                 return "Error: invalid key file./n";
