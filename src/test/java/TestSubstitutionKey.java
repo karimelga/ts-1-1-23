@@ -166,9 +166,12 @@ public class TestSubstitutionKey {
     SubstitutionKey mixedKey = new SubstitutionKey(
             customLineKey,
             "mixed");
-    Assertions.assertEquals("", validKey.decipher(null));
-    Assertions.assertEquals("", emptyKey.decipher(null));
-    Assertions.assertEquals("", mixedKey.decipher(null));
+    Assertions.assertThrows(IllegalArgumentException.class,
+            () -> validKey.decipher(null));
+    Assertions.assertThrows(IllegalArgumentException.class,
+            () -> emptyKey.decipher(null));
+    Assertions.assertThrows(IllegalArgumentException.class,
+            () -> mixedKey.decipher(null));
   }
 
   @Test
@@ -187,6 +190,9 @@ public class TestSubstitutionKey {
     Assertions.assertEquals(key.decipher(
                     "KowaBunga"),
             "LpxbCvohb");
+    Assertions.assertEquals(key.decipher(
+                    ""),
+            "");
   }
 
   @Test
@@ -207,6 +213,9 @@ public class TestSubstitutionKey {
     Assertions.assertEquals(key.decipher(
                     "KowaBunga"),
             "KowaBunga");
+    Assertions.assertEquals(key.decipher(
+                    ""),
+            "");
   }
 
   @Test
@@ -227,6 +236,53 @@ public class TestSubstitutionKey {
     Assertions.assertEquals(key.decipher(
                     "KowaBunga"),
             "KowhBunnh");
+    Assertions.assertEquals(key.decipher(
+                    ""),
+            "");
+  }
+
+  @Test
+  public void overlapBaseTest() throws IOException {
+    FileOpener customLineKey = mock(FileOpener.class);
+    when(customLineKey.getFileLines(anyString())).thenReturn(
+            Arrays.asList(
+                    "aaaaaaa@@@@@@@{{{{{{{",
+                    "abcdefghijklmnopqrstu",
+                    ""));
+    SubstitutionKey key = new SubstitutionKey(
+            customLineKey,
+            "empty");
+    Assertions.assertEquals(key.decipher(
+                    "Ayyy I'm checking stuff"),
+            "Ayyy I'@ a@aa@@@a {{{aa");
+  }
+
+  @Test
+  public void specialCharTest() throws IOException {
+    FileOpener customLineKey = mock(FileOpener.class);
+    when(customLineKey.getFileLines(anyString())).thenReturn(
+            Arrays.asList(
+                    "qwertyuio@_",
+                    "!@#$%^&*() "));
+    SubstitutionKey key = new SubstitutionKey(
+            customLineKey,
+            "Woww");
+    Assertions.assertEquals("Wowq_2y3_equals_o8@",
+            key.decipher("Wow! 2^3 equals (8)"));
+  }
+
+  // Tests based on example given in panapto video
+  @Test
+  public void exampleTest() throws IOException {
+    FileOpener customLineKey = mock(FileOpener.class);
+    when(customLineKey.getFileLines(anyString())).thenReturn(
+            Arrays.asList(
+                    "abcdefghijklmnopqrstuvwxyz",
+                    "bcdefghijklmnopqrstuvwxyza"));
+    SubstitutionKey key = new SubstitutionKey(
+            customLineKey,
+            "dog");
+    Assertions.assertEquals("dog",key.decipher("eph"));
   }
 
   // File opener input

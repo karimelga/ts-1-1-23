@@ -21,7 +21,7 @@ public class SubstitutionKey {
    *
    * @param fileOpener The opener that will be used to open key
    * @param keyPath File path to key that contains substitution cipher
-   * @exception IllegalArgumentException If file opener cannot extract from path or led to
+   * @exception IllegalArgumentException If null args, file opener cannot extract from path or led to
    *                                     invalid substitution key.
    */
   public SubstitutionKey(
@@ -77,11 +77,12 @@ public class SubstitutionKey {
    * and will stay the same in the decrypted string.
    *
    * @param encryptedString String encrypted with given substitution key.
+   * @exception IllegalArgumentException Thrown if encrypted string is null.
    * @return Decrypted string.
    */
-  public String decipher(final String encryptedString) {
+  public String decipher(final String encryptedString) throws IllegalArgumentException {
     if (encryptedString == null) {
-      return "";
+      throw new IllegalArgumentException("Encrypted string cannot be null.");
     }
 
     StringBuilder decryptedOutputStringBuilder = new StringBuilder(encryptedString.length());
