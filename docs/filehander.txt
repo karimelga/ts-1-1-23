@@ -1,0 +1,19 @@
+karim #qna3tx
+
+Our team uses the FileOpenerImplementation class as the exclusive
+tool for accessing external data (the files) as a part of the methods
+associated with the class. My plan was for the team to use .getFileContent(String fileName) to parse through the
+file given (fileName). For files with a lot of the data they could use .getFileLines(String fileName) in order
+to parse through large files. The .getAvailableFiles() and .getDir(File file) both list the files/directories under "docs"
+or param File. Bradley, Jay and Tugce successfully implemented this plan structure for their respective parts.
+
+
+
+
+
+
+
+
+
+
+
