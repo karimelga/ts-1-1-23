@@ -1,11 +1,10 @@
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static org.mockito.Mockito.*;
 
@@ -37,7 +36,7 @@ public class TestSubstitutionKey {
   }
 
   @Test
-  public void IOThrowTest() throws IOException {
+  public void FileOpenerThrow() throws IOException {
     FileOpener throwKey = mock(FileOpener.class);
     when(throwKey.getFileLines(anyString())).thenThrow(IOException.class);
     Assertions.assertThrows(
@@ -138,7 +137,6 @@ public class TestSubstitutionKey {
                     "filler"));
   }
 
-
   // Decipher tests
   @Test
   public void nullExampleTest() throws IOException {
@@ -229,5 +227,50 @@ public class TestSubstitutionKey {
     Assertions.assertEquals(key.decipher(
                     "KowaBunga"),
             "KowhBunnh");
+  }
+
+  // File opener input
+  @Test
+  public void fileOpenerReceive() throws IOException {
+    AtomicReference<String> store = new AtomicReference<>("");
+    FileOpener storeKey = mock(FileOpener.class);
+    when(storeKey.getFileLines(anyString()))
+            .thenAnswer(invocation -> {
+              String arg = invocation.getArgument(0);
+              store.updateAndGet(v -> v + arg);
+              return Arrays.asList("", "");
+            });
+
+    SubstitutionKey key1 = new SubstitutionKey(
+            storeKey,
+            "wow awesome creative");
+    Assertions.assertEquals("wow awesome creative", store.get());
+  }
+
+  @Test
+  public void fileOpenerAffect() throws IOException {
+    FileOpener customLineKey = mock(FileOpener.class);
+    when(customLineKey.getFileLines("a")).thenReturn(
+            Arrays.asList(
+                    "bcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890a",
+                    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"));
+    when(customLineKey.getFileLines("b")).thenReturn(
+            Arrays.asList(
+                    "hijklmn",
+                    "abcdefg",
+                    "",
+                    ""));
+    SubstitutionKey key1 = new SubstitutionKey(
+            customLineKey,
+            "a");
+    Assertions.assertEquals(key1.decipher(
+                    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"),
+            "bcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890a");
+    SubstitutionKey key2 = new SubstitutionKey(
+            customLineKey,
+            "b");
+    Assertions.assertEquals(key2.decipher(
+                    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"),
+            "hijklmnhijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890");
   }
 }
