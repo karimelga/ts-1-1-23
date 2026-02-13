@@ -40,6 +40,5 @@ public class TestFileOpenerImp {
         assertEquals("Junit Test " + String.valueOf(i), data);
         assertEquals("Junit Test " + String.valueOf(i), dataList.getFirst());
         ArrayList<String> testListAllFiles =(ArrayList<String>) fileOpener.getAvailableFiles();
-        assertNull(testListAllFiles); //at the time of making this test, there are no files in "data" directory
     }
 }
