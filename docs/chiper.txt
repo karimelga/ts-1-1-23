@@ -1,5 +1,5 @@
-TopSecret Ciper 2/4/2026
-Jianwen Ding
+TopSecret Ciper 2/13/2026
+Jianwen Ding yrb8xt
 
 This program will support the decryption of substitution ciphers, and it will do so through the use
 of the class SubstitutionKey.
@@ -7,8 +7,8 @@ of the class SubstitutionKey.
 On construction, the class will take in a path to a key file on construction and validate then
 generate a substitution key from the first two lines of the file.
 
-The first line in key files will represent the true characters.
-The second line in key files will represent the chipher characters that will be swapped out for
+The first line in key files will represent the true base characters.
+The second line in key files will represent the cipher characters that will be swapped out for
 true characters.
 
 i.e.
@@ -22,6 +22,8 @@ and this would map to a substitution key of
 A->a
 B->b
 C->c
+
+Thus ciphered text ABBCCA would be decrypted into abbcca.
 
 Invalid keys involve files with less than 2 lines, files with duplicated characters in base
 character line, and files having substitution line and base character line mismatched in length.
