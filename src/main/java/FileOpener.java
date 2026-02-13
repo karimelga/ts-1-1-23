@@ -1,4 +1,3 @@
-
 /* You are responsible for the part of the problem that reads data files.
 The program should expect files in a folder named data (in the same directory
 of the program, or in the root of your project folder.) When a request for a
@@ -16,7 +15,6 @@ public interface FileOpener {
     /*
      * reads the entire content of a specific file from the data directory.
      * * param fileName is the name of the file to read (like, "house_data.csv").
-     * Do not include "data/" in this string; the handler adds it automatically.
      * returns a string containing the full text content of the file and
      * throws **IOException If the file cannot be found or read.
      */
