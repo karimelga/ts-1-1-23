@@ -1,0 +1,37 @@
+Program Control - Member C
+
+Purpose: The ProgramController class connects command-line arguments to the FileOpener and SubstitutionKey components. It does not directly access the file system. It coordinates program flow and ensures proper error handling.
+
+Responsibilities:
+1. If no arguments are provided:
+        - Request available files from FileOpener
+        - Display them in numbered format starting at 01
+
+2. If one argument is provided:
+        - Parse the numeric selection
+        - Validate range
+        - Request file contents from FileOpener
+        - Return the contents
+
+3. If two arguments are provided:
+        - Perform file selection
+        - Load the specific cipher key
+        - Decipher filer content before returning it
+
+4. Error Handling:
+        - Non-numeric selection produces an error message
+        - Out-of-range selection produces an error message
+        - File read failures produces and error message
+        - Invalid key file produces an error message
+        - The program exists after displaying output
+
+Design Decisions:
+- File numbering begins at 01 and uses two-digit formatting
+- Index mapping is selection minus 1
+- ProgramController does not directly access disk files
+- Cipher functionality is delegated to SubstitutionKey
+
+Testing Plan:
+- Unit tests use a FakeFileOpener to avoid direct disk access
+- Tests verify file listing, selection validation, content return, and error handling
+- Each logical branch in ProgramController is tested
